@@ -6,7 +6,7 @@ from io import BytesIO
 from datetime import datetime
 
 # Obtén el token de acceso desde las variables de entorno
-GITHUB_TOKEN = os.getenv('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')
+GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 REPO_NAME = "polancodf2024/XXX"  # Reemplaza con tu usuario y nombre del repositorio
 BRANCH = "main"  # Nombre de la rama a usar
 
@@ -21,9 +21,10 @@ def subir_a_github(file_content, file_name):
             content=file_content.getvalue(),
             branch=BRANCH
         )
-        st.success(f"Archivo subido correctamente a GitHub como 'data/{file_name}'")
+        return True  # Devuelve True si se sube correctamente
     except Exception as e:
         st.error(f"Error al subir el archivo a GitHub: {e}")
+        return False  # Devuelve False si hay un error
 
 # Función para guardar los datos en un archivo Excel
 def guardar_en_excel(data):
@@ -75,6 +76,9 @@ if st.button("Enviar"):
         # Crear un nombre único para el archivo basado en la fecha y hora
         file_name = f"consulta_primera_vez_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
         
-        # Subir el archivo a GitHub
-        subir_a_github(excel_data, file_name)
+        # Subir el archivo a GitHub y mostrar mensaje de éxito o error
+        if subir_a_github(excel_data, file_name):
+            st.success("¡Registro completado! La información ha sido almacenada y subida a GitHub correctamente.")
+        else:
+            st.error("Hubo un problema al guardar la información en GitHub.")
 
