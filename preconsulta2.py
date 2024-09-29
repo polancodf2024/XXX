@@ -1,20 +1,20 @@
+import os
+from github import Github
 import streamlit as st
 import pandas as pd
 from io import BytesIO
 from datetime import datetime
-from github import Github
 
-# Configura el token personal y el repositorio
-GITHUB_TOKEN = "YOUR_GITHUB_TOKEN"  # Reemplaza con tu token personal de GitHub
-REPO_NAME = "usuario/repositorio"  # Reemplaza con tu usuario y nombre del repositorio
-BRANCH = "main"  # Nombre de la rama donde se subirá el archivo
+# Obtén el token de acceso desde las variables de entorno
+GITHUB_TOKEN = os.getenv('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')
+REPO_NAME = "polancodf2024/XXX"  # Reemplaza con tu usuario y nombre del repositorio
+BRANCH = "main"  # Nombre de la rama a usar
 
 # Función para subir el archivo a GitHub
 def subir_a_github(file_content, file_name):
     g = Github(GITHUB_TOKEN)
     repo = g.get_repo(REPO_NAME)
     try:
-        # Subir el archivo al repositorio
         repo.create_file(
             path=f"data/{file_name}",
             message=f"Subiendo archivo de datos: {file_name}",
